@@ -1,1 +1,3 @@
-Learning C# # COP2360-1
+
+Class COP2360-1
+Learning C# 
