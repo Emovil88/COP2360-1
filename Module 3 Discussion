@@ -1,0 +1,34 @@
+using System;
+
+Module_3_Discussion
+{
+    class Program 
+    {
+        // Definition of the Octopus class
+        class Octopus
+        {
+            public int eyes;
+            public int legs;
+        }
+
+        static void Main(string[] args)
+        {
+            // Creating the first instance of Octopus
+            Octopus octopus1 = new Octopus();
+            octopus1.eyes = 2;
+            octopus1.legs = 8;
+
+            // Creating the second instance of Octopus
+            Octopus octopus2 = new Octopus();
+            octopus2.eyes = 2;
+            octopus2.legs = 8;
+
+            // Display the sum of eyes and legs for both instances
+            Console.WriteLine("First octopus: " + (octopus1.eyes + octopus1.legs));
+            Console.WriteLine("Second octopus: " + (octopus2.eyes + octopus2.legs));
+
+            Console.ReadLine();
+        }
+    }
+}
+
