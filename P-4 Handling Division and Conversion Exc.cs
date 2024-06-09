@@ -1,4 +1,6 @@
-Handling Division And Conversion Exceptions
+P-4 Handling Division and Conversion Exceptions 
+//Add More Detailed Error Messages or Logging
+
 using System;
 
 class Program
@@ -31,16 +33,25 @@ class Program
         {
             Console.WriteLine("Error: One or both of the inputs are not valid integers.");
             Console.WriteLine($"Detailed error message: {ex.Message}");
+            Console.WriteLine("Stack Trace: " + ex.StackTrace);
         }
         catch (DivideByZeroException ex)
         {
             Console.WriteLine("Error: Division by zero is not allowed.");
             Console.WriteLine($"Detailed error message: {ex.Message}");
+            Console.WriteLine("Stack Trace: " + ex.StackTrace);
+        }
+        catch (OverflowException ex)
+        {
+            Console.WriteLine("Error: One or both of the inputs are too large.");
+            Console.WriteLine($"Detailed error message: {ex.Message}");
+            Console.WriteLine("Stack Trace: " + ex.StackTrace);
         }
         catch (Exception ex)
         {
             Console.WriteLine("An unexpected error occurred.");
             Console.WriteLine($"Detailed error message: {ex.Message}");
+            Console.WriteLine("Stack Trace: " + ex.StackTrace);
         }
     }
 
@@ -49,7 +60,3 @@ class Program
         return a / b;
     }
 }
-
-
-
-
