@@ -32,16 +32,51 @@ class Program
         }
     }
 
+    // Capitalizes the first letter of each word
+    static string CapitalizeFormat(string input)
+    {
+
+        char[] charArray = input.ToLower().ToCharArray();
+        bool isNewWord = true;
+
+        for (int i = 0; i < charArray.Length; i++)
+        {
+            if (isNewWord && char.IsLetter(charArray[i]))
+            {
+                charArray[i] = char.ToUpper(charArray[i]);
+                isNewWord = false;
+            }
+            else if (charArray[i] == ' ')
+            {
+                isNewWord = true;
+            }
+        }
+
+        return new string(charArray);
+    }
+
     // Method to insert a new MLB team and its details
    static void AddNewTeam()
     {
         Console.WriteLine("What is the name of the team?");
         String teamName = Console.ReadLine();
+
+        teamName = CapitalizeFormat(teamName);
+
+        // Checks to see if the team name is already in the dictionary
+        if (mlbTeams.ContainsKey(teamName))
+        {
+            Console.WriteLine($"{teamName} already exists in the dictionary.");
+            return;
+        }
         Console.WriteLine("What is the stadium of the team?");
         String teamStadium = Console.ReadLine();
+        teamStadium = CapitalizeFormat(teamStadium);
         Console.WriteLine("What are two players on the team?");
         String player1 = Console.ReadLine();
+        player1 = CapitalizeFormat(player1);
         String player2 = Console.ReadLine();
+        player2 = CapitalizeFormat(player2);
         mlbTeams[teamName] = new List<string> {teamStadium, player1, player2};
     }
 
@@ -49,11 +84,23 @@ class Program
     static void RemoveTeam()
     {
         Console.WriteLine("Enter the name of the team to remove:");
-        string teamName = Console.ReadLine();
-        if (mlbTeams.ContainsKey(teamName))
+        string teamName = Console.ReadLine().ToLower();
+        string keyToRemove = null;
+
+        // Checks case sensitivity
+        foreach (var key in mlbTeams.Keys)
         {
-            mlbTeams.Remove(teamName);
-            Console.WriteLine($"{teamName} removed from the dictionary.");
+            if (key.ToLower() == teamName)
+            {
+                keyToRemove = key;
+                break;
+            }
+        }
+
+        if (keyToRemove != null)
+        {
+            mlbTeams.Remove(keyToRemove);
+            Console.WriteLine($"{keyToRemove} removed from the dictionary.");
         }
         else
         {
@@ -66,12 +113,24 @@ class Program
     {
         Console.WriteLine("Enter the name of the team to add a value to:");
         string teamName = Console.ReadLine();
-        if (mlbTeams.ContainsKey(teamName))
+        string keyToUpdate = null;
+
+        // Checks case sensitivity
+        foreach (var key in mlbTeams.Keys)
+        {
+            if (key.ToLower() == teamName.ToLower())
+            {
+                keyToUpdate = key;
+                break;
+            }
+        }
+
+        if (keyToUpdate != null)
         {
             Console.WriteLine("Enter the value to add:");
             string value = Console.ReadLine();
-            mlbTeams[teamName].Add(value);
-            Console.WriteLine($"{value} added to {teamName}.");
+            mlbTeams[keyToUpdate].Add(value);
+            Console.WriteLine($"{value} added to {keyToUpdate}.");
         }
         else
         {
