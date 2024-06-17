@@ -1,3 +1,16 @@
+// In Module 7, we discussed different Data Types and Data Structures. For this assignment, your group will develop a dictionary.
+// Your group will choose the keys and associated values to be stored in the dictionary.
+// Tasks to Complete:
+// 1. Create a Switch Statement: Implement a switch statement that allows the user to perform the following tasks:
+// a. Populate the Dictionary: Add keys and values determined by your group.
+// b. Display Dictionary Contents: Show the contents of the dictionary using any of the three enumeration methods covered in Module 7.
+// c. Remove a Key: Remove a specified key from the dictionary.
+// d. Add a New Key and Value: Insert a new key-value pair into the dictionary.
+// e. Add a Value to an Existing Key: Append a new value to an existing key.
+// f. Sort the Keys: Sort the keys in the dictionary.
+// 2. Submission: Submit a link to your group's work stored in a GitHub repository.
+// Make sure your code is well-organized and thoroughly commented to explain each section's functionality.
+
 using System; // Importing the System namespace
 using System.Collections.Generic; // Importing the Collections namespace for using collections like Dictionary and List
 
@@ -6,7 +19,7 @@ class Program
     // Created a dictionary to store MLB teams and their details
     static Dictionary<string, List<string>> mlbTeams = new Dictionary<string, List<string>>();
 
-    // Method to populate the dictionary with MLB teams and their details
+    // Created a method to populate the dictionary with MLB teams and their details
     static void PopulateDictionary()
     {
         mlbTeams["Boston Red Sox"] = new List<string> { "Fenway Park", "David Ortiz", "Mookie Betts" };
@@ -14,28 +27,29 @@ class Program
         mlbTeams["Houston Astros"] = new List<string> { "Minute Maid Park", "Jose Altuve", "George Springer" };
     }
 
-    // Method to display the contents of the dictionary
+    // Created a method to display the contents of the dictionary
     static void DisplayDictionaryContents()
     {
-        ICollection<string> teamKeys = mlbTeams.Keys;
+        // Created a collector and foreach loop to iterate through the dictionary keys
+        ICollection<string> teamNames = mlbTeams.Keys;
 
-        foreach (var k in teamKeys)
+        foreach (var teamName in teamNames)
         {
-            Console.WriteLine($"Team: {k}"); // Prints the team name (key)
+            Console.WriteLine($"Team: {teamName}"); // Prints the team name (key)
             Console.WriteLine("Details:"); // Prints the string 'Details:'
             
-            foreach (var d in mlbTeams[k])
+            // Created a foreach loop to iterate through each value of a team (key)
+            foreach (var detail in mlbTeams[teamName])
             {
-                Console.WriteLine($"- {d}"); // Prints the team details (values)
+                Console.WriteLine($"- {detail}"); // Prints the team details (values)
             }
             Console.WriteLine(); // Prints a blank line for better readability
         }
     }
 
-    // Capitalizes the first letter of each word
+    // Created a method to format user input to proper nouns
     static string CapitalizeFormat(string input)
     {
-
         char[] charArray = input.ToLower().ToCharArray();
         bool isNewWord = true;
 
@@ -51,17 +65,15 @@ class Program
                 isNewWord = true;
             }
         }
-
         return new string(charArray);
     }
 
     // Method to insert a new MLB team and its details
-   static void AddNewTeam()
+    static void AddNewTeam()
     {
-        Console.WriteLine("What is the name of the team?");
-        String teamName = Console.ReadLine();
-
-        teamName = CapitalizeFormat(teamName);
+        // Prompts the user to enter a key
+        Console.WriteLine("What is the name of the Team?");
+        string teamName = CapitalizeFormat(Console.ReadLine());
 
         // Checks to see if the team name is already in the dictionary
         if (mlbTeams.ContainsKey(teamName))
@@ -69,38 +81,27 @@ class Program
             Console.WriteLine($"{teamName} already exists in the dictionary.");
             return;
         }
-        Console.WriteLine("What is the stadium of the team?");
-        String teamStadium = Console.ReadLine();
-        teamStadium = CapitalizeFormat(teamStadium);
-        Console.WriteLine("What are two players on the team?");
-        String player1 = Console.ReadLine();
-        player1 = CapitalizeFormat(player1);
-        String player2 = Console.ReadLine();
-        player2 = CapitalizeFormat(player2);
+
+        // Prompts the user to enter key-vaules
+        Console.WriteLine("What is the name of the Team's stadium?");
+        string teamStadium = CapitalizeFormat(Console.ReadLine());
+        Console.WriteLine("Enter the name of two players on the Team (one name per line):");
+        string player1 = CapitalizeFormat(Console.ReadLine());
+        string player2 = CapitalizeFormat(Console.ReadLine());
+
         mlbTeams[teamName] = new List<string> {teamStadium, player1, player2};
     }
 
     // Method to remove a key from the dictionary
     static void RemoveTeam()
     {
-        Console.WriteLine("Enter the name of the team to remove:");
-        string teamName = Console.ReadLine().ToLower();
-        string keyToRemove = null;
+        // Prompts the user to remove a key
+        Console.WriteLine("Enter the name of the Team to remove:");
+        string teamName = CapitalizeFormat(Console.ReadLine());
 
-        // Checks case sensitivity
-        foreach (var key in mlbTeams.Keys)
+        if (mlbTeams.Remove(teamName))
         {
-            if (key.ToLower() == teamName)
-            {
-                keyToRemove = key;
-                break;
-            }
-        }
-
-        if (keyToRemove != null)
-        {
-            mlbTeams.Remove(keyToRemove);
-            Console.WriteLine($"{keyToRemove} removed from the dictionary.");
+            Console.WriteLine($"{teamName} removed from the dictionary.");
         }
         else
         {
@@ -111,26 +112,16 @@ class Program
     // Method to add a value to an existing key
     static void AddValueToExistingTeam()
     {
-        Console.WriteLine("Enter the name of the team to add a value to:");
-        string teamName = Console.ReadLine();
-        string keyToUpdate = null;
+        // Prompts the user to enter a key
+        Console.WriteLine("Enter the name of the Team to modify:");
+        string teamName = CapitalizeFormat(Console.ReadLine());
 
-        // Checks case sensitivity
-        foreach (var key in mlbTeams.Keys)
+        if (mlbTeams.ContainsKey(teamName))
         {
-            if (key.ToLower() == teamName.ToLower())
-            {
-                keyToUpdate = key;
-                break;
-            }
-        }
-
-        if (keyToUpdate != null)
-        {
-            Console.WriteLine("Enter the value to add:");
-            string value = Console.ReadLine();
-            mlbTeams[keyToUpdate].Add(value);
-            Console.WriteLine($"{value} added to {keyToUpdate}.");
+            Console.WriteLine("Enter the name of the player to add:");
+            string value = CapitalizeFormat(Console.ReadLine());
+            mlbTeams[teamName].Add(value);
+            Console.WriteLine($"{value} added to {teamName}.");
         }
         else
         {
@@ -149,8 +140,7 @@ class Program
             Console.WriteLine($"{key}: {string.Join(", ", mlbTeams[key])}");
         }
     }
-
-    // Main method to control the program
+    // The start of the program
     static void Main(string[] args)
     {
         PopulateDictionary();
@@ -158,12 +148,12 @@ class Program
 
         while (!exit)
         {
-            Console.WriteLine("\nChoose an option:");
+            Console.WriteLine("\nChoose an option:"); // '\n' Adds a newline before the prompt
             Console.WriteLine("1. Display Dictionary Contents");
-            Console.WriteLine("2. Remove a Key");
-            Console.WriteLine("3. Add a New Key and Value");
-            Console.WriteLine("4. Add a Value to an Existing Key");
-            Console.WriteLine("5. Sort the Keys");
+            Console.WriteLine("2. Remove a Team");
+            Console.WriteLine("3. Add a new Team with details");
+            Console.WriteLine("4. Modify an existing Team");
+            Console.WriteLine("5. Sort the Teams");
             Console.WriteLine("6. Exit");
 
             switch (Console.ReadLine())
