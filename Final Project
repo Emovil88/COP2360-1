@@ -1,1 +1,144 @@
 
+using System;
+using System.Collections.Generic;
+
+public class Contractor
+{
+    // Member variables
+    private string contractorName;
+    private int contractorNumber;
+    private DateTime contractorStartDate;
+
+    // Constructor
+    public Contractor(string name, int number, DateTime startDate)
+    {
+        contractorName = name;
+        contractorNumber = number;
+        contractorStartDate = startDate;
+    }
+
+    // Accessor methods
+    public string GetContractorName()
+    {
+        return contractorName;
+    }
+
+    public int GetContractorNumber()
+    {
+        return contractorNumber;
+    }
+
+    public DateTime GetContractorStartDate()
+    {
+        return contractorStartDate;
+    }
+
+    // Mutator methods
+    public void SetContractorName(string name)
+    {
+        contractorName = name;
+    }
+
+    public void SetContractorNumber(int number)
+    {
+        contractorNumber = number;
+    }
+
+    public void SetContractorStartDate(DateTime startDate)
+    {
+        contractorStartDate = startDate;
+    }
+}
+
+public class Subcontractor : Contractor
+{
+    // Member variables
+    private int shift;
+    private double hourlyPayRate;
+
+    // Constructor
+    public Subcontractor(string name, int number, DateTime startDate, int shift, double hourlyPayRate)
+        : base(name, number, startDate)
+    {
+        this.shift = shift;
+        this.hourlyPayRate = hourlyPayRate;
+    }
+
+    // Accessor methods
+    public int GetShift()
+    {
+        return shift;
+    }
+
+    public double GetHourlyPayRate()
+    {
+        return hourlyPayRate;
+    }
+
+    // Mutator methods
+    public void SetShift(int shift)
+    {
+        this.shift = shift;
+    }
+
+    public void SetHourlyPayRate(double hourlyPayRate)
+    {
+        this.hourlyPayRate = hourlyPayRate;
+    }
+
+    // Method to compute pay with shift differential
+    public float ComputePay(float hoursWorked)
+    {
+        float basePay = (float)(hourlyPayRate * hoursWorked);
+        if (shift == 2) // Night shift
+        {
+            basePay *= 1.03f; // Add 3% shift differential
+        }
+        return basePay;
+    }
+}
+
+public class Program
+{
+    public static void Main()
+    {
+        List<Subcontractor> subcontractors = new List<Subcontractor>();
+
+        while (true)
+        {
+            Console.Write("Enter subcontractor name (or 'exit' to finish): ");
+            string name = Console.ReadLine();
+            if (name.ToLower() == "exit")
+            {
+                break;
+            }
+
+            Console.Write("Enter contractor number: ");
+            int number = int.Parse(Console.ReadLine());
+
+            Console.Write("Enter contractor start date (yyyy-mm-dd): ");
+            DateTime startDate = DateTime.Parse(Console.ReadLine());
+
+            Console.Write("Enter shift (1 for day, 2 for night): ");
+            int shift = int.Parse(Console.ReadLine());
+
+            Console.Write("Enter hourly pay rate: ");
+            double hourlyPayRate = double.Parse(Console.ReadLine());
+
+            Subcontractor subcontractor = new Subcontractor(name, number, startDate, shift, hourlyPayRate);
+            subcontractors.Add(subcontractor);
+
+            Console.Write("Enter hours worked: ");
+            float hoursWorked = float.Parse(Console.ReadLine());
+
+            float pay = subcontractor.ComputePay(hoursWorked);
+            Console.WriteLine($"Computed pay for {name}: ${pay}\n");
+        }
+
+        Console.WriteLine("All subcontractors:");
+        foreach (Subcontractor sc in subcontractors)
+        {
+            Console.WriteLine($"Name: {sc.GetContractorName()}, Number: {sc.GetContractorNumber()}, Start Date: {sc.GetContractorStartDate()}, Shift: {sc.GetShift()}, Hourly Pay Rate: {sc.GetHourlyPayRate()}");
+        }
+    }
+}
